@@ -1,0 +1,17 @@
+package com.example.Full_Project.Model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String imageName;
+    private String imageType;
+    @Lob
+    private byte[] imageData;
+}
