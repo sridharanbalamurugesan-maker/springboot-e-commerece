@@ -1,6 +1,8 @@
 package com.example.Full_Project.Response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 public class ApiResponse<T>{

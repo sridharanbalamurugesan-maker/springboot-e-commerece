@@ -37,4 +37,13 @@ public class CategoryController {
     public ApiResponse<?> getCategoryOptions(){
         return categoryService.getCategoryOptions();
     }
+    @PutMapping("/category-edit/{id}")
+    public ApiResponse<?> editCategory(@PathVariable Long id,@RequestPart Category categoryDetail,@RequestPart MultipartFile imagefile)throws IOException{
+        categoryDetail.setId(id);
+        return categoryService.editCategory(categoryDetail,imagefile);
+    }
+    @DeleteMapping("/delete-category/{id}")
+    public ApiResponse<?> deleteCategory(@PathVariable Long id){
+        return categoryService.deleteCategory(id);
+    }
 }

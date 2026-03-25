@@ -13,6 +13,8 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +26,9 @@ public class ProductsController {
     @Autowired
     private ProductRepo productRepo;
     @PostMapping("/create-product")
-    public ApiResponse<?> createProduct(@RequestPart Product productDetail, @RequestPart MultipartFile imageFile){
+    public ApiResponse<?> createProduct(@RequestPart Product productDetails, @RequestPart MultipartFile imageFile){
         try{
-            return productService.createProduct(productDetail,imageFile);
+            return productService.createProduct(productDetails,imageFile);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -49,5 +51,14 @@ public class ProductsController {
     @GetMapping("/product-view/{id}")
     public ApiResponse<?> getProductView(@PathVariable Long id){
         return productService.getProductView(id);
+    }
+    @PutMapping("/product-edit/{id}")
+    public ApiResponse<?> editProducts(@PathVariable Long id,@RequestPart Product productDetails,@RequestPart(required = false) MultipartFile imageFile) throws IOException {
+        productDetails.setId(id);
+        return productService.editProducts(productDetails,imageFile);
+    }
+    @DeleteMapping("/product-delete/{id}")
+    public ApiResponse<?> deleteProduct(@PathVariable Long id){
+        return productService.deleteProduct(id);
     }
 }
