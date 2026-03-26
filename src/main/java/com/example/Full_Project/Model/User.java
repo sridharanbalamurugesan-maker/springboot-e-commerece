@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Setter
 @Getter
@@ -30,6 +31,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isBlock;
 
     public User(){
     }

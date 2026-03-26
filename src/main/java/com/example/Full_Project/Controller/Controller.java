@@ -27,5 +27,13 @@ public class Controller {
 
         return userService.login(login);
     }
+    @GetMapping("/get-all-users")
+    public ApiResponse<?> getAllUsers(){
+        return userService.getAllUsers();
+    }
+    @PutMapping("/block-user/{id}")
+    public ApiResponse<?> blockUser(@PathVariable Long id){
+        return userService.blockUser(id);
+    }
 
 }

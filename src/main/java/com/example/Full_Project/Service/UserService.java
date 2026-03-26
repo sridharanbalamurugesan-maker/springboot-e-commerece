@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -34,6 +36,9 @@ public class UserService {
     public ApiResponse<?> login(LoginRequest request) {
         User user=userRepo.findByEmail(request.getEmail())
                   .orElseThrow(()-> new RuntimeException("User Not Found"));
+        if(user.isBlock()){
+            throw new RuntimeException("User Blocked");
+        }
         System.out.println(user.getPassword());
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new RuntimeException("Invalid Password");
@@ -46,5 +51,20 @@ public class UserService {
         response.setAddress(user.getAddress());
         response.setRoleId(user.getRole().getId());
         return  new ApiResponse<>(true,"successfully Logged In",response);
+    }
+
+    public ApiResponse<?> getAllUsers() {
+        List<User> data=userRepo.findAll();
+        return new ApiResponse<>(true,"success",data);
+    }
+
+    public ApiResponse<?> blockUser(Long id) {
+        User user=userRepo.findById(id)
+                .orElseThrow(()->new RuntimeException("User Not Found"));
+        boolean condition;
+        condition= !user.isBlock();
+        user.setBlock(condition);
+        userRepo.save(user);
+        return new ApiResponse<>(true,"User Blocked Successfully",user);
     }
 }
